@@ -1,10 +1,10 @@
 #!/bin/bash
-# Written By Nicole
-# Any Comments or Questions please e-mail to ml@nicole-haehnel.de
+# Originally Written By Nicole
+# Modification by Henry
 #
 # Plugin Name: check_ipsec
-# Version: 2.0
-# Date: 26/08/2008
+# Version: 2.1
+# Date: 09/17/2013
 #
 # Usage: check_ipsec --tunnels <n>
 #
@@ -20,7 +20,7 @@ REVISION=`echo '$Revision: 2.0 $' | sed -e 's/[^0-9.]//g'`
 #STRONG=`$IPSECBIN --version |grep strongSwan | wc -l`
 DOWN=""
 # ---------- Change to your needs ----------
-PLUGINPATH="/usr/lib64/nagios/plugins"
+PLUGINPATH="/usr/lib/nagios/plugins"
 GATEWAYLIST="gateways.txt"
 IPSECBIN="/usr/sbin/ipsec"
 FPINGBIN="/usr/sbin/fping"
