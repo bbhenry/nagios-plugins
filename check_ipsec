@@ -1,4 +1,5 @@
 #!/bin/bash
+# Originally Written By Nicole
 # Modification by Henry
 #
 # Plugin Name: check_ipsec
@@ -61,7 +62,6 @@ fi
 
 print_usage() {
         echo "Usage:"
-        echo " $PROGNAME --tunnels <number of configured tunnels>"
         echo " $PROGNAME --help"
         echo " $PROGNAME --version"
         echo " Created by Henry, questions or problems, report on Github"
@@ -74,8 +74,6 @@ print_help() {
         print_usage
         echo " Checks vpn connection status of an openswan or strongswan installation."
 		echo ""
-        echo " --tunnels <number of configured tunnels>"
-		echo " -T <number of configured tunnels>"
         echo " provides the tunnel status of the openswan or strongswan installation"
 		echo ""
         echo " --help"
@@ -92,9 +90,9 @@ check_tunnel() {
 
 	if [[ "$STRONG" -eq "1" ]]
 	then
-	    GATEWAYS=`$IPSECBIN status | grep -e "ESTABLISHED"`
+	    GATEWAYS=`$IPSECBIN status`
 	else
-	    GATEWAYS=`$IPSECBIN whack --status | grep -e "ESTABLISHED"`
+	    GATEWAYS=`$IPSECBIN whack --status`
 	fi
 
 	location
@@ -124,14 +122,14 @@ while read line; do
 
 	tunneltest=`echo "$GATEWAYS" | grep -e $CONN | wc -l`
 
-	if [[ "$tunneltest" -eq "0" ]]
+	if [[ "$tunneltest" -ge "3" ]]
     	then
-        	DOWN="$DOWN $CONN"
-    	else
 		count=$[$count+1]
+    	else
+		DOWN="$DOWN $CONN"
 	fi
 
-    	if [[ "$PINGIP" -eq "1" && "$tunneltest" -eq "1" ]]
+    	if [[ "$PINGIP" -eq "1" && "$tunneltest" -eq "3" ]]
     	then
         alive=`$FPINGBIN $IP -r 1 | grep alive | wc -l`
 
@@ -171,4 +169,3 @@ case "$1" in
         exit $STATE_OK
 
 esac
-
